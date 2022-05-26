@@ -1,6 +1,5 @@
-#include <Arduino.h>
-
 #include "statemachine.h"
+#include <Arduino.h>
 #include "state.h"
 #include "stateinitial.h"
 #include "viewer.h"
@@ -10,16 +9,37 @@ StateMachine::StateMachine()
   registered = 0;
   initialState = new InitialState(this);
   setState(initialState);
+  initModel();
 }
 
 void StateMachine::setOutput(const char *str)
 {
   free(model.output);
-  
-  model.output = (char *) malloc(strlen(str) * sizeof(char) + 1);
-  strcpy(model.output, str);
+  model.output = (char *)malloc(strlen(str) * sizeof(char) + 1);
 
-  update(model);
+  if (model.output != NULL)
+  {
+    strcpy(model.output, str);
+  }
+}
+
+void StateMachine::setNUID(byte *buffer, byte bufferSize)
+{
+  for (byte i = 0; i < bufferSize; i++)
+  {
+    model.nuid[i] = 0;
+  }
+  
+  for (byte i = 0; i < min(bufferSize, sizeof(model.nuid)); i++)
+  {
+    model.nuid[i] = buffer[i];
+  }
+}
+
+void StateMachine::initModel()
+{
+  model.output = (char *)malloc(sizeof(char));
+  strcpy(model.output, "");
 }
 
 void StateMachine::turnEncRight()
@@ -42,14 +62,14 @@ void StateMachine::turnPressedEncLeft()
   state->turnPressedEncLeft();
 }
 
-void StateMachine::readRFID()
+void StateMachine::readRFID(byte *buffer, byte size)
 {
-  state->readRFID();
+  state->readRFID(buffer, size);
 }
 
-void StateMachine::readEncPressedRFID()
+void StateMachine::readEncPressedRFID(byte *buffer, byte size)
 {
-  state->readEncPressedRFID();
+  state->readEncPressedRFID(buffer, size);
 }
 
 void StateMachine::setState(MachineState *_state)
@@ -71,7 +91,7 @@ void StateMachine::registerViewer(Viewer *viewer)
   }
 }
 
-void StateMachine::update(Model model)
+void StateMachine::update()
 {
   for (int i = 0; i < registered; ++i)
   {

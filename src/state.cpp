@@ -28,12 +28,12 @@ void MachineState::turnPressedEncLeft()
     sm->setOutput("Turn left pressed encoder");
 }
 
-void MachineState::readRFID()
+void MachineState::readRFID(byte *buffer, byte size)
 {
     sm->setOutput("Read RFID");
 }
 
-void MachineState::readEncPressedRFID()
+void MachineState::readEncPressedRFID(byte *buffer, byte size)
 {
     sm->setOutput("Read RFID with pressed encoder");
 }

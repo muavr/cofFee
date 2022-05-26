@@ -6,6 +6,9 @@
 
 class SerialViewer : public Viewer
 {
+private:
+    void printDec(byte *buffer, byte bufferSize);
+
 public:
     SerialViewer();
     virtual ~SerialViewer() = default;

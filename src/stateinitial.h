@@ -10,6 +10,8 @@ public:
     InitialState(StateMachine *sm);
     void turnEncRight();
     void turnEncLeft();
+    void readRFID(byte *buffer, byte size);
+    void readEncPressedRFID(byte *buffer, byte size);
 };
 
 #endif

@@ -1,6 +1,7 @@
 #ifndef STATE_MACHINE_H
 #define STATE_MACHINE_H
 
+#include <Arduino.h>
 #include "model.h"
 
 class MachineState;
@@ -22,16 +23,18 @@ public:
 
     void setState(MachineState *state);
     void setOutput(const char *output);
+    void setNUID(byte *buffer, byte bufferSize);
+    void initModel();
     void registerViewer(Viewer *viewer);
-    void update(Model model);
+    void update();
 
     void clickEnc();
     void turnEncRight();
     void turnEncLeft();
     void turnPressedEncRight();
     void turnPressedEncLeft();
-    void readRFID();
-    void readEncPressedRFID();
+    void readRFID(byte *buffer, byte size);
+    void readEncPressedRFID(byte *buffer, byte size);
 };
 
 #endif

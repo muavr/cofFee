@@ -16,8 +16,8 @@ public:
     virtual void turnEncLeft();
     virtual void turnPressedEncRight();
     virtual void turnPressedEncLeft();
-    virtual void readRFID();
-    virtual void readEncPressedRFID();
+    virtual void readRFID(byte *buffer, byte size);
+    virtual void readEncPressedRFID(byte *buffer, byte size);
 };
 
 #endif

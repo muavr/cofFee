@@ -6,19 +6,14 @@
 #define MAX_PERSONS 30
 
 // encoder pins
-#define ENC_S1_PIN 4
-#define ENC_S2_PIN 3
-#define ENC_KEY_PIN 2
+#define ENC_KEY_PIN 4
+#define ENC_S1_PIN 3
+#define ENC_S2_PIN 2
 
-#define BTN_MODE_PIN 4
-#define BTN_PERSON_PIN 9
+// rfid pins
+#define SS_PIN 10
+#define RST_PIN 9
 
-// led panel pins
-#define LED_LISTENING_PIN A1
-#define LED_REGISTRATION_PIN A2
-#define LED_EDITING_PIN A3
-#define LED_ZEROING_PIN A4
-#define LED_REMOVING_PIN A5
 
 // beeper pin
 #define BEEPER_PIN 1

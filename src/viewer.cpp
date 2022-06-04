@@ -1,6 +1,5 @@
-#include "model.h"
 #include "viewer.h"
 
-Viewer::Viewer() {}
+Viewer::Viewer(StateMachine *_sm) : sm(_sm) {}
 
-void Viewer::update(Model model) {}
+void Viewer::update() {}

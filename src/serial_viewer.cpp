@@ -1,16 +1,14 @@
-#include "serialviewer.h"
+#include "serial_viewer.h"
 
-SerialViewer::SerialViewer() : Viewer()
+SerialViewer::SerialViewer(StateMachine *_sm) : Viewer(_sm)
 {
     Serial.begin(9600);
 }
 
-void SerialViewer::update(Model model)
+void SerialViewer::update()
 {
-    Serial.print("OUTPUT: ");
-    Serial.println(model.output);
-    Serial.print("NUID: ");
-    printDec(model.nuid, sizeof(model.nuid));
+    Serial.print("STATE: ");
+    Serial.println(sm->getStateCode());
 }
 
 void SerialViewer::printDec(byte *buffer, byte bufferSize)

@@ -2,7 +2,8 @@
 #define SERIAL_VIEWER_H
 
 #include "viewer.h"
-#include "model.h"
+#include "statemachine.h"
+
 
 class SerialViewer : public Viewer
 {
@@ -10,9 +11,9 @@ private:
     void printDec(byte *buffer, byte bufferSize);
 
 public:
-    SerialViewer();
+    SerialViewer(StateMachine *sm);
     virtual ~SerialViewer() = default;
-    virtual void update(Model model);
+    virtual void update();
 };
 
 #endif

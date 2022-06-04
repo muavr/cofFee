@@ -1,11 +1,26 @@
 #include <Arduino.h>
 #include "state.h"
 
-MachineState::MachineState(StateMachine *sm) : sm(sm) {}
+MachineState::MachineState(StateMachine *_sm) : sm(_sm) {}
+
+uint8_t MachineState::getCode()
+{
+    return code;
+}
 
 void MachineState::clickEnc()
 {
     sm->setOutput("Click");
+}
+
+void MachineState::turnEnc()
+{
+    sm->setOutput("Turn");
+}
+
+void MachineState::turnPressedEnc()
+{
+    sm->setOutput("Turn pressed");
 }
 
 void MachineState::turnEncRight()
@@ -28,7 +43,27 @@ void MachineState::turnPressedEncLeft()
     sm->setOutput("Turn left pressed encoder");
 }
 
-void MachineState::readRFID(byte *buffer, byte size)
+void MachineState::singleClickEnc()
+{
+    sm->setOutput("Single click");
+}
+
+void MachineState::doubleClickEnc()
+{
+    sm->setOutput("Double click");
+}
+
+void MachineState::tripleClickEnc()
+{
+    sm->setOutput("Triple click");
+}
+
+void MachineState::quadrupleClickEnc()
+{
+    sm->setOutput("Quadruple click");
+}
+
+void MachineState::readRFID(uint8_t *nuid, uint8_t size)
 {
     sm->setOutput("Read RFID");
 }

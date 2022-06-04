@@ -4,37 +4,82 @@
 #include <Arduino.h>
 #include "model.h"
 
+#define MAX_VIEWERS 3
+#define MAX_NICK_LENGTH 14
+#define MAX_USERS 30
+#define MAX_KEY_LENGTH 8
+
 class MachineState;
 class InitialState;
 class Viewer;
 
+struct Person
+{
+    uint8_t nuid[MAX_KEY_LENGTH] = {0};
+    uint16_t cups;
+    uint16_t totalCups;
+    uint16_t sum;
+    char nick[MAX_NICK_LENGTH];
+};
+
+class Storage
+{
+public:
+    uint16_t price;
+    uint8_t registered;
+    uint8_t states[MAX_USERS];
+    Person tmpUser;
+    Person users[MAX_USERS];
+    Person *searchUser(uint8_t nuid[], uint8_t size);
+    uint8_t saveUser(uint8_t nuid[], uint8_t nuid_size, char nick[]);
+};
+
 class StateMachine
 {
 private:
-    InitialState *initialState;
+    MachineState *initialState;
+    MachineState *usrActionWaitingState;
     MachineState *state;
-    Viewer *viewers[3];
+    Viewer *viewers[MAX_VIEWERS];
     Model model;
-    short registered;
 
 public:
     StateMachine();
+
+    uint8_t getStateCode();
+    MachineState * getState();
+
+    // storage
+    Storage storage;
+    void loadStorage();
+
+    // states
     MachineState *getInitialState();
-
+    MachineState *getUsrActionWaitingState();
     void setState(MachineState *state);
-    void setOutput(const char *output);
-    void setNUID(byte *buffer, byte bufferSize);
-    void initModel();
-    void registerViewer(Viewer *viewer);
-    void update();
 
+    // observe state
+    void update();
+    void registerViewer(Viewer *viewer);
+
+    // actions
     void clickEnc();
     void turnEncRight();
     void turnEncLeft();
     void turnPressedEncRight();
     void turnPressedEncLeft();
-    void readRFID(byte *buffer, byte size);
+    void singleClickEnc();
+    void doubleClickEnc();
+    void tripleClickEnc();
+    void quadrupleClickEnc();
+    void readRFID(uint8_t *nuid, uint8_t size);
     void readEncPressedRFID(byte *buffer, byte size);
+
+    // deprecated methods and fields
+    short registered;
+    void setOutput(const char *output);
+    void initModel();
+    void setNUID(byte *buffer, byte bufferSize);
 };
 
 #endif

@@ -1,14 +1,17 @@
 #ifndef VIEWER_H
 #define VIEWER_H
 
-#include "model.h"
+#include "statemachine.h"
 
 class Viewer
 {
 public:
-    Viewer();
+    Viewer(StateMachine *_sm);
     virtual ~Viewer() = default;
-    virtual void update(Model model);
+    virtual void update();
+
+protected:
+    StateMachine *sm;
 };
 
 #endif

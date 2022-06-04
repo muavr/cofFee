@@ -1,15 +1,37 @@
 #include "statemachine.h"
 #include <Arduino.h>
 #include "state.h"
-#include "stateinitial.h"
+#include "state_initial.h"
+#include "waiting_state.h"
 #include "viewer.h"
+
+Person *Storage::searchUser(uint8_t *nuid, uint8_t size)
+{
+  for (int8_t i = 0; i < min(registered, MAX_USERS); ++i)
+  {
+    for (uint8_t j = 0; j < min(8, size); ++j)
+    {
+      if (nuid[j] != users[i].nuid[j])
+        return NULL;
+    }
+    return &users[i];
+  }
+}
 
 StateMachine::StateMachine()
 {
   registered = 0;
   initialState = new InitialState(this);
+  usrActionWaitingState = new WaitingState(this);
   setState(initialState);
   initModel();
+  loadStorage();
+}
+
+void StateMachine::loadStorage()
+{
+  storage.price = 0;
+  storage.registered = 0;
 }
 
 void StateMachine::setOutput(const char *str)
@@ -29,7 +51,7 @@ void StateMachine::setNUID(byte *buffer, byte bufferSize)
   {
     model.nuid[i] = 0;
   }
-  
+
   for (byte i = 0; i < min(bufferSize, sizeof(model.nuid)); i++)
   {
     model.nuid[i] = buffer[i];
@@ -60,11 +82,32 @@ void StateMachine::turnPressedEncRight()
 void StateMachine::turnPressedEncLeft()
 {
   state->turnPressedEncLeft();
+  
 }
 
-void StateMachine::readRFID(byte *buffer, byte size)
+void StateMachine::singleClickEnc()
 {
-  state->readRFID(buffer, size);
+    state->singleClickEnc();
+}
+
+void StateMachine::doubleClickEnc()
+{
+    state->doubleClickEnc();
+}
+
+void StateMachine::tripleClickEnc()
+{
+    state->tripleClickEnc();
+}
+
+void StateMachine::quadrupleClickEnc()
+{
+    state->quadrupleClickEnc();
+}
+
+void StateMachine::readRFID(uint8_t *nuid, uint8_t size)
+{
+  state->readRFID(nuid, size);
 }
 
 void StateMachine::readEncPressedRFID(byte *buffer, byte size)
@@ -75,11 +118,22 @@ void StateMachine::readEncPressedRFID(byte *buffer, byte size)
 void StateMachine::setState(MachineState *_state)
 {
   state = _state;
+  update();
+}
+
+MachineState *StateMachine::getState()
+{
+  return state;
 }
 
 MachineState *StateMachine::getInitialState()
 {
   return initialState;
+}
+
+MachineState *StateMachine::getUsrActionWaitingState()
+{
+  return usrActionWaitingState;
 }
 
 void StateMachine::registerViewer(Viewer *viewer)
@@ -98,7 +152,12 @@ void StateMachine::update()
     Viewer *viewer = viewers[i];
     if (viewer != NULL)
     {
-      viewer->update(model);
+      viewer->update();
     }
   }
+}
+
+uint8_t StateMachine::getStateCode()
+{
+  return state->getCode();
 }

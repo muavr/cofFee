@@ -32,6 +32,9 @@ public:
     Person users[MAX_USERS];
     Person *searchUser(uint8_t nuid[], uint8_t size);
     uint8_t saveUser(uint8_t nuid[], uint8_t nuid_size, char nick[]);
+
+    uint16_t getPrice();
+    void setPrice(uint16_t _price);
 };
 
 class StateMachine
@@ -39,6 +42,7 @@ class StateMachine
 private:
     MachineState *initialState;
     MachineState *usrActionWaitingState;
+    MachineState *priceEnteringState;
     MachineState *state;
     Viewer *viewers[MAX_VIEWERS];
     Model model;
@@ -47,15 +51,17 @@ public:
     StateMachine();
 
     uint8_t getStateCode();
-    MachineState * getState();
+    MachineState *getState();
 
     // storage
     Storage storage;
+    Storage *getStorage();
     void loadStorage();
 
     // states
     MachineState *getInitialState();
     MachineState *getUsrActionWaitingState();
+    MachineState *getPriceEnteringState();
     void setState(MachineState *state);
 
     // observe state

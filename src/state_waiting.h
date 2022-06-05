@@ -8,6 +8,7 @@ class WaitingState : public MachineState
 {
 public:
     WaitingState(StateMachine *_sm);
+    void tripleClickEnc();
 };
 
 #endif

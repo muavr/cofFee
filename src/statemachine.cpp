@@ -2,7 +2,8 @@
 #include <Arduino.h>
 #include "state.h"
 #include "state_initial.h"
-#include "waiting_state.h"
+#include "state_waiting.h"
+#include "state_price_entering.h"
 #include "viewer.h"
 
 Person *Storage::searchUser(uint8_t *nuid, uint8_t size)
@@ -23,6 +24,7 @@ StateMachine::StateMachine()
   registered = 0;
   initialState = new InitialState(this);
   usrActionWaitingState = new WaitingState(this);
+  priceEnteringState = new PriceEnteringState(this);
   setState(initialState);
   initModel();
   loadStorage();
@@ -136,6 +138,11 @@ MachineState *StateMachine::getUsrActionWaitingState()
   return usrActionWaitingState;
 }
 
+MachineState *StateMachine::getPriceEnteringState()
+{
+  return priceEnteringState;
+}
+
 void StateMachine::registerViewer(Viewer *viewer)
 {
   if (this->registered < 3)
@@ -160,4 +167,19 @@ void StateMachine::update()
 uint8_t StateMachine::getStateCode()
 {
   return state->getCode();
+}
+
+Storage* StateMachine::getStorage()
+{
+  return &storage;
+}
+
+uint16_t Storage::getPrice()
+{
+  return price;
+}
+
+void Storage::setPrice(uint16_t _price)
+{
+  price = _price;
 }

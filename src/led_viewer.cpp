@@ -47,7 +47,6 @@ void LedViewer::turnOnLed(uint8_t ledNumber)
 {
   if (ledNumber < MAX_VIEWER_LEDS and states[ledNumber] == 1)
   {
-    Serial.println(pins[ledNumber]);
     digitalWrite(pins[ledNumber], HIGH);
   }
 }

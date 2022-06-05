@@ -48,5 +48,6 @@ const char ALPHABET_UP[] PROGMEM = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I',
 #define LED_USR_REMOVING A5
 
 #define MAX_VIEWER_LEDS 6
+#define MAX_PRICE 100
 
 #endif

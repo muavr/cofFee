@@ -7,8 +7,13 @@ SerialViewer::SerialViewer(StateMachine *_sm) : Viewer(_sm)
 
 void SerialViewer::update()
 {
+    Serial.println("");
+    Serial.println("---------------------");
     Serial.print("STATE: ");
     Serial.println(sm->getStateCode());
+    Serial.print("PRICE: ");
+    Serial.println(sm->getStorage()->getPrice());
+    Serial.println("---------------------");
 }
 
 void SerialViewer::printDec(byte *buffer, byte bufferSize)

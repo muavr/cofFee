@@ -37,7 +37,6 @@ void setup()
   attachInterrupt(0, isr, CHANGE);
   attachInterrupt(1, isr, CHANGE);
 
-  delay(2000);
   sm->setState(sm->getUsrActionWaitingState());
 }
 
@@ -61,6 +60,16 @@ void loop()
     if (enc.left())
     {
       sm->turnEncLeft();
+      return;
+    }
+    if (enc.rightH())
+    {
+      sm->turnPressedEncRight();
+      return;
+    }
+    if (enc.leftH())
+    {
+      sm->turnPressedEncLeft();
       return;
     }
     if (enc.press())
